@@ -1,14 +1,13 @@
 {
   "name": "cwinperfcounter",
   "description": "Windows performance counters access library",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "author": {
     "name": "SkyLined",
     "email": "berendjanwever@gmail.com",
     "url": "https://github.com/SkyLined"
   },
-  "contributors": [
-  ],
+  "contributors": [],
   "repository": {
     "type": "git",
     "url": "git://github.com/SkyLined/cWinPerfCounter"
