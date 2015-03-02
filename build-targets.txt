@@ -1,0 +1,8 @@
+# This file lists common processor architectures and versions of node that
+# the "build.cmd" script should create ".node" files for in the "addon" folder.
+ia32 v0.10.36
+x64  v0.10.36
+ia32 v0.11.16
+x64  v0.11.16
+ia32 v0.12.0
+x64  v0.12.0
