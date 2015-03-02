@@ -44,3 +44,4 @@ Temporary Items
 addon/ia32/
 addon/x64/
 node_modules/
+npm-debug.log
