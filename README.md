@@ -3,8 +3,6 @@ cWinPerfCounter
 
 Access Windows performance counters through Node.js.
 
---------------------------------------------------------------------------------
-
 Getting Started
 ---------------
 1. Install and build cWinPerfCounter via NPM.
@@ -21,29 +19,29 @@ Getting Started
   
 4. Read values for the requested performance counter.
   
-  ````try {
+  ```  
+  try {
     console.log(oPerfCounter.fnGetValue());
   } catch (oError) {
     console.log(oError);
-  }````
+  }
+  ```
   
   This particular performance counter will allow you to read the average total
   CPU usage on your machine between calls. This means it will not return a value
   the first time you call it, but only after you have called it twice.
 
---------------------------------------------------------------------------------
-
 Notes
 -----
 ### Including cWinPerfCounter in your public module
 
-By default, `npm install` will only build for your processor architecture and
-node version. If you want to include this addon in your node module for others
-to use without requiring them to build cWinPerfCounter, it might be a good idea
-to pre-build it for several common combinations of processor architecture and
-node version.
+`npm install` uses the `install.cmd` script to build cWinPerCounter for your
+current processor architecture and node version. If you want to include this addon
+in your node module for others to use without requiring them to build
+cWinPerfCounter, you will want to pre-build it for several common combinations of
+processor architecture and node version.
 
-To make this easier, I added the "build.cmd" script. This will read a list of
+To make this easier, I added the `build.cmd` script. This will read a list of
 processor architecture and node version combinations from "build-targets.txt"
 and build a cWinPerfCounter.node file for each. These files are stored in
 separate sub-folders of the "addon" folder, and the "addon/index.js" attempts
