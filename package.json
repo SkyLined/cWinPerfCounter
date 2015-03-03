@@ -20,7 +20,7 @@
   },
   "main": "./index.js",
   "engines": {
-    "node": ">=0.9.0"
+    "node": ">=0.9.8"
   },
   "os": [
     "win32"
