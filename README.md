@@ -5,7 +5,7 @@ Access Windows performance counters through Node.js.
 
 Getting Started
 ---------------
-1. Install and build cWinPerfCounter via NPM.
+1. Install cWinPerfCounter via NPM.
   
   `npm install cWinPerfCounter`
   
@@ -20,32 +20,38 @@ Getting Started
 4. Read values for the requested performance counter.
   
   ```  
-  try {
-    console.log(oPerfCounter.fnGetValue());
-  } catch (oError) {
-    console.log(oError);
-  }
+  setInterval(function() {
+    try {
+      console.log(oPerfCounter.fnGetValue());
+    } catch (oError) {
+      console.log(oError);
+    }
+  }, 1000);
   ```
   
-  This particular performance counter will allow you to read the average total
-  CPU usage on your machine between calls. This means it will not return a value
-  the first time you call it, but only after you have called it twice.
+  This particular performance counter will return the average total CPU usage
+  on your machine since the last time it was read. This means it will not
+  return a value the first time you call it, but only after you have called it
+  twice. The try ... catch will handle the error on the first read.
 
 Notes
 -----
 ### Including cWinPerfCounter in your public module
 
-`npm install` uses the `install.cmd` script to build cWinPerCounter for your
-current processor architecture and node version. If you want to include this addon
-in your node module for others to use without requiring them to build
-cWinPerfCounter, you will want to pre-build it for several common combinations of
-processor architecture and node version.
+cWinPerCounter comes with pre-build binaries for all supported processor
+architectures and node versions (0.9.0 - 0.12.0). Future node versions may also
+be supported, unless the requirements for compiled addons changes. These files
+are stored in separate sub-folders of the "bin" folder. The "index.js" attempts
+to load each ".node" file for the user's processor architecture until one works.
+For version 0.9, this means it may attempt to load the 0.10 and 0.11 version
+first, but since these fail it will eventuall load the 0.9 version and return.
+For 0.12, the 0.11 version should load successfully, so there is no separate
+build.
 
-To make this easier, I added the `build.cmd` script. This will read a list of
-processor architecture and node version combinations from "build-targets.txt"
-and build a cWinPerfCounter.node file for each. These files are stored in
-separate sub-folders of the "addon" folder, and the "addon/index.js" attempts
-to load the correct ".node" file for the user's node installation.
+The `build.cmd` script will read a list of combinations of processor
+architecture and node version from "build-targets.txt". It will build a
+cWinPerfCounter.node file for each of them and store it in its own sub-folder
+under the "bin" folder. 
 
 ### How to find out what performance counters are available
 
