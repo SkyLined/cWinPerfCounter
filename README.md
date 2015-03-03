@@ -7,7 +7,12 @@ Getting Started
 ---------------
 1. Install cWinPerfCounter via NPM.
   
-  `npm install cWinPerfCounter`
+  `npm install cwinperfcounter`
+  
+  Optionally: rename `cwinperfcounter` to `cWinPerfCounter`: npm is unable to
+  handle the complexity of uppercase characters in a module name. Node on
+  Windows does not have this problem, so renaming the folder is not required
+  for you to use the module.
   
 2. Require cWinPerfCounter in your project.
   

@@ -1,2 +1,3 @@
-npm version patch -m "Updated to version %%s"
-npm publish
+@ECHO OFF
+CALL npm version patch -m "Updated to version %%s"
+CALL npm publish
