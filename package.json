@@ -1,6 +1,10 @@
 {
   "name": "cwinperfcounter",
   "description": "Windows performance counters access library",
+  "keywords": [
+    "Windows",
+    "performance counters"
+  ],
   "version": "0.0.3",
   "author": {
     "name": "SkyLined",
@@ -9,6 +13,9 @@
   },
   "contributors": [
   ],
+  "bugs": {
+    "url": "https://github.com/SkyLined/cWinPerfCounter/issues"
+  },
   "repository": {
     "type": "git",
     "url": "git://github.com/SkyLined/cWinPerfCounter"
@@ -17,7 +24,12 @@
   "engines": {
     "node": ">=0.9.0"
   },
+  "os": ["win32"],
+  "cpu": ["ia32", "x64"],
   "license": "CC0-1.0",
+  "scripts": {
+    "preinstall": "build.cmd install"
+  },
   "devDependencies": {
     "nan": "^1.5.1"
   }
