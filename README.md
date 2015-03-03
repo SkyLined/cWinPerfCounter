@@ -36,22 +36,24 @@ Getting Started
 
 Notes
 -----
-### Including cWinPerfCounter in your public module
+### cWinPerfCounter cross-platform support
 
-cWinPerCounter comes with pre-build binaries for all supported processor
-architectures and node versions (0.9.0 - 0.12.0). Future node versions may also
-be supported, unless the requirements for compiled addons changes. These files
-are stored in separate sub-folders of the "bin" folder. The "index.js" attempts
-to load each ".node" file for the user's processor architecture until one works.
-For version 0.9, this means it may attempt to load the 0.10 and 0.11 version
-first, but since these fail it will eventuall load the 0.9 version and return.
-For 0.12, the 0.11 version should load successfully, so there is no separate
-build.
+cWinPerfCounter comes with pre-build binaries for all supported processor
+architectures and node versions (ia32 and x64, node v0.9.0 - v0.12.0). These
+files are stored in separate sub-folders of the "bin" folder. The "index.js"
+attempts to load each ".node" file for the user's processor architecture until
+one works. For version 0.9, this means it may attempt to load the 0.10 and 0.11
+version first, but since these fail it will eventually load the 0.9 version and
+return. For 0.12, the 0.11 version should load successfully, so there is no
+separate build. Future node versions may also be supported, if they can load a
+v0.11 addon. If the requirements for compiled addons change in a future version,
+an additional build of cWinPerfCounter.node will be required. 
 
+### Building cWinPerfCounter
 The `build.cmd` script will read a list of combinations of processor
 architecture and node version from "build-targets.txt". It will build a
 cWinPerfCounter.node file for each of them and store it in its own sub-folder
-under the "bin" folder. 
+under the "bin" folder.
 
 ### How to find out what performance counters are available
 
