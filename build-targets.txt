@@ -1,8 +1,16 @@
 # This file lists common processor architectures and versions of node that
 # the "build.cmd" script should create ".node" files for in the "addon" folder.
+
+# Building for v0.8 fails as it does not appear it supports an initialization
+# function with two arguments, so the module.exports cannot be overwritten.
+ia32 v0.9.9
+x64  v0.9.9
+
 ia32 v0.10.36
 x64  v0.10.36
+
 ia32 v0.11.16
 x64  v0.11.16
-ia32 v0.12.0
-x64  v0.12.0
+
+# A separate build for v0.12 is not needed, as it will load the v0.11 modules.
+
