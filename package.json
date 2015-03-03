@@ -5,14 +5,12 @@
     "Windows",
     "performance counters"
   ],
-  "version": "0.0.3",
+  "version": "0.0.5",
   "author": {
     "name": "SkyLined",
     "email": "berendjanwever@gmail.com",
     "url": "https://github.com/SkyLined"
   },
-  "contributors": [
-  ],
   "bugs": {
     "url": "https://github.com/SkyLined/cWinPerfCounter/issues"
   },
@@ -28,6 +26,7 @@
   "cpu": ["ia32", "x64"],
   "license": "CC0-1.0",
   "scripts": {
+    "prepublish": "npm version patch -m \"Updated to version %s\"",
     "preinstall": "build.cmd install"
   },
   "devDependencies": {
