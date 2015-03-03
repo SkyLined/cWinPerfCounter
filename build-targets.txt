@@ -3,6 +3,7 @@
 
 # Building for v0.8 fails as it does not appear it supports an initialization
 # function with two arguments, so the module.exports cannot be overwritten.
+
 ia32 v0.9.9
 x64  v0.9.9
 

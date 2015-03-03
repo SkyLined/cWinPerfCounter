@@ -95,8 +95,8 @@ NAN_METHOD(cWinPerfCounter::fnGetValue) {
   }
   NanReturnNull();
 }
-void init(Handle<Object> exports, Handle<Object> module) {
-  cWinPerfCounter::fInit(module);
+void fInit(Handle<Object> hoExports, Handle<Object> hoModule) {
+  cWinPerfCounter::fInit(hoModule);
 }
 
-NODE_MODULE(cWinPerfCounter, init)
+NODE_MODULE(cWinPerfCounter, fInit)
