@@ -5,7 +5,7 @@
     "Windows",
     "performance counters"
   ],
-  "version": "0.0.6",
+  "version": "0.0.5",
   "author": {
     "name": "SkyLined",
     "email": "berendjanwever@gmail.com",
@@ -22,16 +22,10 @@
   "engines": {
     "node": ">=0.9.0"
   },
-  "os": [
-    "win32"
-  ],
-  "cpu": [
-    "ia32",
-    "x64"
-  ],
+  "os": ["win32"],
+  "cpu": ["ia32", "x64"],
   "license": "CC0-1.0",
   "scripts": {
-    "prepublish": "npm version patch -m \"Updated to version %s\"",
     "preinstall": "build.cmd install"
   },
   "devDependencies": {
