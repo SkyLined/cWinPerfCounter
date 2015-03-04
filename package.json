@@ -1,6 +1,6 @@
 {
   "name": "cwinperfcounter",
-  "description": "Windows performance counters access library",
+  "description": "Class to access Windows performance counters for Node.js",
   "keywords": [
     "Windows",
     "performance counters"
