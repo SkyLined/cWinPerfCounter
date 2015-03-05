@@ -7,6 +7,13 @@
 #include <pdhmsg.h>
 #include <windows.h>
 
+#ifdef _M_IX86
+  #define NODE_PROCESSOR_ARCHITECTURE "ia32"
+#endif
+#ifdef _M_X64
+  #define NODE_PROCESSOR_ARCHITECTURE "x64"
+#endif
+
 using namespace v8;
 
 class cWinPerfCounter : public node::ObjectWrap {
@@ -29,17 +36,23 @@ class cWinPerfCounter : public node::ObjectWrap {
     PDH_HCOUNTER _hCounter = 0;
 }
 
-static void cWinPerfCounter::fInit(Handle<Object> hoModule) {
+static void cWinPerfCounter::fInit(Handle<Object> hoExports) {
   NanScope();
   
   Local<FunctionTemplate> oConstructorFunctionTemplate = NanNew<FunctionTemplate>(fNew);
   oConstructorFunctionTemplate->SetClassName(NanNew<String>("cWinPerfCounter"));
+  oConstructorFunctionTemplate->Set(
+    NanNew<String>("sAddonNodeVersion"),                NanNew<String>(NODE_VERSION_STRING)
+  );
+  oConstructorFunctionTemplate->Set(
+    NanNew<String>("sAddonNodeProcessorArchitecture"),  NanNew<String>(NODE_PROCESSOR_ARCHITECTURE)
+  );
   oConstructorFunctionTemplate->InstanceTemplate()->SetInternalFieldCount(1);
   
   NODE_SET_PROTOTYPE_METHOD(oConstructorFunctionTemplate, "fnGetValue", fnGetValue);
   
   NanAssignPersistent(fConstructor, oConstructorFunctionTemplate->GetFunction());
-  hoModule->Set(NanNew<String>("exports"), oConstructorFunctionTemplate->GetFunction());
+  hoExports->Set(NanNew<String>("cWinPerfCounter"), oConstructorFunctionTemplate->GetFunction());
 }
 
 Persistent<Function> cWinPerfCounter::fConstructor;
@@ -95,8 +108,18 @@ NAN_METHOD(cWinPerfCounter::fnGetValue) {
   }
   NanReturnNull();
 }
+/*
+* Initialization functions that take two arguments were introduced in node.js
+* version v0.9.8 and will not compile on lower version. To work around this,
+* this code will use a single argument initialization function and the index.js
+* file that loads the addon will copy the exports to the module.
+* Code for v0.9.8 and up would be:
 void fInit(Handle<Object> hoExports, Handle<Object> hoModule) {
   cWinPerfCounter::fInit(hoModule);
 }
-
+* Code for all versions, which requires index.js to copy the exports:
+*/
+void fInit(Handle<Object> hoExports) {
+  cWinPerfCounter::fInit(hoExports);
+}
 NODE_MODULE(cWinPerfCounter, fInit)

@@ -20,7 +20,7 @@
   },
   "main": "./index.js",
   "engines": {
-    "node": ">=0.9.8"
+    "node": "0.8.0 - 0.10.36 || 0.11.13 - 0.12.x"
   },
   "os": [
     "win32"
@@ -34,6 +34,6 @@
     "preinstall": "build.cmd install"
   },
   "devDependencies": {
-    "nan": "^1.5.1"
+    "nan": "1.7.x"
   }
 }

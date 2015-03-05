@@ -1,17 +1,36 @@
 # This file lists common processor architectures and versions of node that
 # the "build.cmd" script should create ".node" files for in the "addon" folder.
+# This normally includes all the highest node versions that did not introduce
+# breaking changes to the addon structure. Each of these builds should work in
+# previous compatible version, reducing the total number of builds required
+# to support a wide range of node versions.
 
-# Building for v0.8 fails as it does not appear it supports an initialization
-# function with two arguments, so the module.exports cannot be overwritten.
+# node v0.7.x and lower are only supported by accident, if at all.
 
+# v0.8.0-v0.8.9 are compatible.
+ia32 v0.8.9
+x64  v0.8.9
+# v0.9.0 introduced breaking changes.
+
+# v0.9.0-v0.9.9 are compatible.
 ia32 v0.9.9
 x64  v0.9.9
+# v0.10.0 introduced breaking changes.
 
+# v0.10.0-v0.10.36 are compatible.
 ia32 v0.10.36
 x64  v0.10.36
+# v0.11.0 introduced breaking changes.
 
-ia32 v0.11.16
-x64  v0.11.16
+# v0.11.0-v0.11.12 are no longer supported by Nan and cannot be build.
 
-# A separate build for v0.12 is not needed, as it will load the v0.11 modules.
+# v0.11.13-v0.11.14 are compatible.
+ia32 v0.11.13
+x64  v0.11.13
+# v0.11.14 does not build, but will load the v0.11.13 addon.
+# v0.11.15 introduced breaking changes.
 
+# v0.11.15-v0.12.0 are compatible.
+ia32 v0.12.0
+x64  v0.12.0
+# v0.12.0 was the latest version at the time of this writing.
