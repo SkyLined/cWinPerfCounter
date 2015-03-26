@@ -1,4 +1,5 @@
 @ECHO OFF
+CALL :SET_TITLE "%~dp0"
 :START
   ECHO === Updating version number...
   CALL npm version patch -m "Version updated to %%%%s"
@@ -16,6 +17,10 @@
     )
     GOTO :ERROR
   )
+  EXIT /B 0
+
+:SET_TITLE
+  TITLE Publishing %~n1...
   EXIT /B 0
 
 :ERROR
