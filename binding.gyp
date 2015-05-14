@@ -5,7 +5,7 @@
       "sources": [ "src/cWinPerfCounter.cpp" ],
       "libraries": [ "Pdh.lib" ],
       "include_dirs" : [
-          "<!(node -e \"require('nan')\")"
+          "node_modules/nan"
       ]
     }
   ]
