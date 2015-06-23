@@ -1,7 +1,7 @@
 {
   "targets": [
     {
-      "target_name": "cWinPerfCounter",
+      "target_name": "cwinperfcounter-next",
       "sources": [ "src/cWinPerfCounter.cpp" ],
       "libraries": [ "Pdh.lib" ],
       "include_dirs" : [
