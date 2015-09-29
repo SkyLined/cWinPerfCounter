@@ -33,7 +33,7 @@
   "scripts": {
     "preinstall": "build.cmd install"
   },
-  "devDependencies": {
-    "nan": "1.7.x"
+  "dependencies": {
+    "nan": "^2.0.9"
   }
 }

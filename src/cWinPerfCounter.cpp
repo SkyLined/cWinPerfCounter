@@ -18,7 +18,7 @@ using namespace v8;
 
 class cWinPerfCounter : public node::ObjectWrap {
   public:
-    static void fInit(Handle<Object> hoModule);
+    static void fInit(Local<Object> hoModule);
     
   private:
     explicit cWinPerfCounter(PDH_HQUERY hQuery, PDH_HCOUNTER hCounter) :
@@ -29,84 +29,83 @@ class cWinPerfCounter : public node::ObjectWrap {
       if (_hQuery) PdhCloseQuery(_hQuery);
     }
     
-    static Persistent<Function> fConstructor;
+    static Nan::Persistent<Function> fConstructor;
     static NAN_METHOD(fNew);
     static NAN_METHOD(fnGetValue);
     PDH_HQUERY _hQuery = 0;
     PDH_HCOUNTER _hCounter = 0;
 }
 
-static void cWinPerfCounter::fInit(Handle<Object> hoExports) {
-  NanScope();
+static void cWinPerfCounter::fInit(Local<Object> hoExports) {
+  Nan::HandleScope scope;
   
-  Local<FunctionTemplate> oConstructorFunctionTemplate = NanNew<FunctionTemplate>(fNew);
-  oConstructorFunctionTemplate->SetClassName(NanNew<String>("cWinPerfCounter"));
+  Local<FunctionTemplate> oConstructorFunctionTemplate = Nan::New<FunctionTemplate>(fNew);
+  oConstructorFunctionTemplate->SetClassName(Nan::New<String>("cWinPerfCounter").ToLocalChecked());
   oConstructorFunctionTemplate->Set(
-    NanNew<String>("sAddonNodeVersion"),                NanNew<String>(NODE_VERSION_STRING)
+    Nan::New<String>("sAddonNodeVersion").ToLocalChecked(),                Nan::New<String>(NODE_VERSION_STRING).ToLocalChecked()
   );
   oConstructorFunctionTemplate->Set(
-    NanNew<String>("sAddonNodeProcessorArchitecture"),  NanNew<String>(NODE_PROCESSOR_ARCHITECTURE)
+    Nan::New<String>("sAddonNodeProcessorArchitecture").ToLocalChecked(),  Nan::New<String>(NODE_PROCESSOR_ARCHITECTURE).ToLocalChecked()
   );
   oConstructorFunctionTemplate->InstanceTemplate()->SetInternalFieldCount(1);
   
-  NODE_SET_PROTOTYPE_METHOD(oConstructorFunctionTemplate, "fnGetValue", fnGetValue);
+  Nan::SetPrototypeMethod(oConstructorFunctionTemplate, "fnGetValue", fnGetValue);
   
-  NanAssignPersistent(fConstructor, oConstructorFunctionTemplate->GetFunction());
-  hoExports->Set(NanNew<String>("cWinPerfCounter"), oConstructorFunctionTemplate->GetFunction());
+  fConstructor.Reset(oConstructorFunctionTemplate->GetFunction());
+  hoExports->Set(Nan::New<String>("cWinPerfCounter").ToLocalChecked(), oConstructorFunctionTemplate->GetFunction());
 }
 
-Persistent<Function> cWinPerfCounter::fConstructor;
+Nan::Persistent<Function> cWinPerfCounter::fConstructor;
 
 NAN_METHOD(cWinPerfCounter::fNew) {
-  NanScope();
+  Nan::HandleScope scope;
   
-  if (!args.IsConstructCall()) {
-    Local<Value> avArguments[1] = { args[0] }; // move inline
-    NanReturnValue(NanNew<Function>(fConstructor)->NewInstance(1, avArguments));
+  if (!info.IsConstructCall()) {
+    Local<Value> avArguments[1] = { info[0] }; // move inline
+    info.GetReturnValue().Set(Nan::New<Function>(fConstructor)->NewInstance(1, avArguments));
   }
-  String::Value sPerfCounterName(args[0]);
+  String::Value sPerfCounterName(info[0]);
   if (*sPerfCounterName == NULL) {
-    NanThrowTypeError("Wrong type of argument");
-    NanReturnUndefined();
+    Nan::ThrowTypeError("Wrong type of argument");
+    info.GetReturnValue().SetUndefined();
   }
   PDH_HQUERY hQuery;
   if (PdhOpenQuery(NULL, 0, &hQuery) != ERROR_SUCCESS) {
-    NanThrowError("PDH: Cannot open query");
-    NanReturnUndefined();
+    Nan::ThrowError("PDH: Cannot open query");
+    info.GetReturnValue().SetUndefined();
   }
   PDH_HCOUNTER hCounter;
   if(PdhAddCounter(hQuery, (LPCWSTR)*sPerfCounterName, 0, &hCounter) != ERROR_SUCCESS) {
     PdhCloseQuery(hQuery);
     Local<String> sErrorMessage = String::Concat(
-      NanNew<String>("PDH: Cannot add counter "),
-      NanNew<String>(*sPerfCounterName)
+      Nan::New<String>("PDH: Cannot add counter ").ToLocalChecked(),
+      Nan::New<String>(*sPerfCounterName).ToLocalChecked()
     ); 
-    NanThrowError(sErrorMessage);
-    NanReturnUndefined();
+    Nan::ThrowError(sErrorMessage);
+    info.GetReturnValue().SetUndefined();
   }
   cWinPerfCounter* oPerfCounter = new cWinPerfCounter(hQuery, hCounter);
-  oPerfCounter->Wrap(args.This());
-  NanReturnThis();
+  oPerfCounter->Wrap(info.This());
+  info.GetReturnValue().Set(info.This());
 }
 
 NAN_METHOD(cWinPerfCounter::fnGetValue) {
-  NanScope();
+  Nan::HandleScope scope;
   
-  cWinPerfCounter* poPerfCounter = ObjectWrap::Unwrap<cWinPerfCounter>(args.Holder());
+  cWinPerfCounter* poPerfCounter = ObjectWrap::Unwrap<cWinPerfCounter>(info.Holder());
   if (PdhCollectQueryData(poPerfCounter->_hQuery) != ERROR_SUCCESS) {
-    NanThrowError("PDH: Cannot collect query data");
-    NanReturnUndefined();
+    Nan::ThrowError("PDH: Cannot collect query data");
+    info.GetReturnValue().SetUndefined();
   }
   PDH_FMT_COUNTERVALUE oCounterValue;
   PDH_STATUS xStatusCode = PdhGetFormattedCounterValue(poPerfCounter->_hCounter, PDH_FMT_DOUBLE | PDH_FMT_NOCAP100, 0, &oCounterValue);
   if (xStatusCode != ERROR_SUCCESS) {
-    NanThrowError("PDH: Cannot format counter value");
-    NanReturnUndefined();
+    Nan::ThrowError("PDH: Cannot format counter value");
+    info.GetReturnValue().SetUndefined();
   }
   if (oCounterValue.CStatus == PDH_CSTATUS_VALID_DATA) {
-    NanReturnValue(NanNew<Number>(oCounterValue.doubleValue));
+    info.GetReturnValue().Set(Nan::New<Number>(oCounterValue.doubleValue));
   }
-  NanReturnNull();
 }
 /*
 * Initialization functions that take two arguments were introduced in node.js
@@ -114,12 +113,12 @@ NAN_METHOD(cWinPerfCounter::fnGetValue) {
 * this code will use a single argument initialization function and the index.js
 * file that loads the addon will copy the exports to the module.
 * Code for v0.9.8 and up would be:
-void fInit(Handle<Object> hoExports, Handle<Object> hoModule) {
+void fInit(Local<Object> hoExports, Local<Object> hoModule) {
   cWinPerfCounter::fInit(hoModule);
 }
 * Code for all versions, which requires index.js to copy the exports:
 */
-void fInit(Handle<Object> hoExports) {
+void fInit(Local<Object> hoExports) {
   cWinPerfCounter::fInit(hoExports);
 }
 NODE_MODULE(cWinPerfCounter, fInit)
