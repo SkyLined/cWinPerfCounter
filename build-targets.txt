@@ -5,32 +5,5 @@
 # previous compatible version, reducing the total number of builds required
 # to support a wide range of node versions.
 
-# node v0.7.x and lower are only supported by accident, if at all.
-
-# v0.8.0-v0.8.9 are compatible.
-ia32 v0.8.9
-x64  v0.8.9
-# v0.9.0 introduced breaking changes.
-
-# v0.9.0-v0.9.9 are compatible.
-ia32 v0.9.9
-x64  v0.9.9
-# v0.10.0 introduced breaking changes.
-
-# v0.10.0-v0.10.36 are compatible.
-ia32 v0.10.36
-x64  v0.10.36
-# v0.11.0 introduced breaking changes.
-
-# v0.11.0-v0.11.12 are no longer supported by Nan and cannot be build.
-
-# v0.11.13-v0.11.14 are compatible.
-ia32 v0.11.13
-x64  v0.11.13
-# v0.11.14 does not build, but will load the v0.11.13 addon.
-# v0.11.15 introduced breaking changes.
-
-# v0.11.15-v0.12.0 are compatible.
-ia32 v0.12.0
-x64  v0.12.0
-# v0.12.0 was the latest version at the time of this writing.
+ia32 v7.3.0
+x64  v7.3.0

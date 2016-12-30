@@ -4,13 +4,23 @@ IF "%~1" == "install" (
   ECHO To rebuild them all run "build.cmd". You can also provide a processor
   ECHO architecture and node version to build a single .node file, eg.
   ECHO    build.cmd ia32 0.12.0
-) ELSE IF "%~1" == "" (
+  EXIT /B 0
+)
+CALL npm update
+IF ERRORLEVEL 1 EXIT /B %ERRORLEVEL%
+IF "%~1" == "" (
   :: Walk through build-targets.txt and build each target
   FOR /F "eol=# tokens=1,2" %%I in (build-targets.txt) DO (
-    CALL build.cmd %%I %%J
+    CALL :BUILD_TARGET %%I %%J
     IF ERRORLEVEL 1 EXIT /B %ERRORLEVEL%
   )
-) ELSE (
+  EXIT /B 0
+)
+
+CALL :BUILD_TARGET %1 %2
+EXIT /B %ERRORLEVEL%
+
+:BUILD_TARGET
   TITLE Building for %1 architecture and node %2
   CALL node-gyp install rebuild --arch=%1 --target=%2
   IF ERRORLEVEL 1 (
@@ -27,5 +37,4 @@ IF "%~1" == "install" (
   :: Delete obsolete build folder
   CALL node-gyp clean
   TITLE Building finished
-)
-EXIT /B 0
+  EXIT /B 0
