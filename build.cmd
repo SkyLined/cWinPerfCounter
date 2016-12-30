@@ -6,8 +6,23 @@ IF "%~1" == "install" (
   ECHO    build.cmd ia32 0.12.0
   EXIT /B 0
 )
+WHERE npm 2>&1 >nul
+IF ERRORLEVEL 1 (
+  ECHO It appears you do not have npm installed yet.
+  ECHO Please install npm before attempting to build this package.
+  ECHO Go to http://npmjs.org for details.
+)
 CALL npm update
 IF ERRORLEVEL 1 EXIT /B %ERRORLEVEL%
+WHERE node-gyp 2>&1 >nul
+IF ERRORLEVEL 1 (
+  ECHO It appears you do not have node-gyp installed yet.
+  ECHO Please install node-gyp before attempting to build this package.
+  ECHO     npm install -g node-gyp
+  ECHO node-gyp has some additional dependencies, such as Python.
+  ECHO Go to https://github.com/nodejs/node-gyp for details.
+  EXIT /B 1
+)
 IF "%~1" == "" (
   :: Walk through build-targets.txt and build each target
   FOR /F "eol=# tokens=1,2" %%I in (build-targets.txt) DO (

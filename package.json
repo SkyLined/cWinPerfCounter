@@ -5,7 +5,7 @@
     "Windows",
     "performance counters"
   ],
-  "version": "0.0.18",
+  "version": "0.0.19",
   "author": {
     "name": "SkyLined",
     "email": "berendjanwever@gmail.com",
@@ -20,7 +20,7 @@
   },
   "main": "./index.js",
   "engines": {
-    "node": "0.8.0 - 0.10.36 || 0.11.13 - 0.12.x"
+    "node": "7.3.0"
   },
   "os": [
     "win32"
@@ -34,7 +34,6 @@
     "preinstall": "build.cmd install"
   },
   "devDependencies": {
-    "nan": "2.5.0",
-    "node-gyp": "3.4.0"
+    "nan": "2.5.0"
   }
 }
