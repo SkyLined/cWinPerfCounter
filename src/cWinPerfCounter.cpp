@@ -78,10 +78,66 @@ class cWinPerfCounter : public Nan::ObjectWrap {
         Nan::ThrowError("PDH: Cannot format counter value");
         info.GetReturnValue().SetUndefined();
       }
-      if (oCounterValue.CStatus == PDH_CSTATUS_VALID_DATA) {
-        info.GetReturnValue().Set(Nan::New<v8::Number>(oCounterValue.doubleValue));
-      }
-      info.GetReturnValue().SetNull();
+      switch (oCounterValue.CStatus) {
+        case PDH_CSTATUS_NO_MACHINE:
+          Nan::ThrowError("PDH_CSTATUS_NO_MACHINE"); // Unable to connect to the computer specified in the counter path.
+          info.GetReturnValue().SetNull();
+          break;
+        case PDH_CSTATUS_NO_OBJECT:
+          Nan::ThrowError("PDH_CSTATUS_NO_OBJECT"); // The specified performance object coould not be found.
+          info.GetReturnValue().SetNull();
+          break;
+        case PDH_CSTATUS_NO_INSTANCE:
+          Nan::ThrowError("PDH_CSTATUS_NO_INSTANCE"); // The specified instance could not be found in the performance object.
+          info.GetReturnValue().SetNull();
+          break;
+        case PDH_CSTATUS_NO_COUNTER:
+          Nan::ThrowError("PDH_CSTATUS_NO_COUNTER"); //  The specified counter name could not be found.
+          info.GetReturnValue().SetNull();
+          break;
+        case PDH_CSTATUS_INVALID_DATA:
+          Nan::ThrowError("PDH_CSTATUS_INVALID_DATA"); // The counter returned invalid data.
+          info.GetReturnValue().SetNull();
+          break;
+        case PDH_CSTATUS_VALID_DATA:
+          info.GetReturnValue().Set(Nan::New<v8::Number>(oCounterValue.doubleValue));
+          break;
+        case PDH_CSTATUS_NEW_DATA:
+          info.GetReturnValue().Set(Nan::New<v8::Number>(oCounterValue.doubleValue));
+          break;
+        case PDH_MORE_DATA:
+          Nan::ThrowError("PDH_MORE_DATA"); // A larger buffer is needed to retrieve counter data.
+          info.GetReturnValue().SetNull();
+          break;
+        case PDH_CSTATUS_ITEM_NOT_VALIDATED:
+          Nan::ThrowError("PDH_CSTATUS_ITEM_NOT_VALIDATED"); // The counter but has not been validated nor accessed.
+          info.GetReturnValue().SetNull();
+          break;
+        case PDH_CALC_NEGATIVE_DENOMINATOR:
+          Nan::ThrowError("PDH_CALC_NEGATIVE_DENOMINATOR"); // A counter has a negative denominator value.
+          info.GetReturnValue().SetNull();
+          break;
+        case PDH_CALC_NEGATIVE_TIMEBASE:
+          Nan::ThrowError("PDH_CALC_NEGATIVE_TIMEBASE"); // A counter has a negative timebase value.
+          info.GetReturnValue().SetNull();
+          break;
+        case PDH_CALC_NEGATIVE_VALUE:
+          Nan::ThrowError("PDH_CALC_NEGATIVE_VALUE"); // A counter has a negative value.
+          info.GetReturnValue().SetNull();
+          break;
+        case PDH_CSTATUS_NO_COUNTERNAME:
+          Nan::ThrowError("PDH_CSTATUS_NO_COUNTERNAME"); // No counter path was specified in the query.
+          info.GetReturnValue().SetNull();
+          break;
+        case PDH_CSTATUS_BAD_COUNTERNAME:
+          Nan::ThrowError("PDH_CSTATUS_BAD_COUNTERNAME"); // The counter path format is incorrect.
+          info.GetReturnValue().SetNull();
+          break;
+        default:
+          Nan::ThrowError("PDH: Unknown CStatus value"); // I should probably add the value
+          info.GetReturnValue().SetNull();
+          break;
+      };
     };
   
   public:
